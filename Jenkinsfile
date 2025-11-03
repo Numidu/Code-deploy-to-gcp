@@ -2,14 +2,14 @@ pipeline {
     agent any
 
     tools {
-        maven 'maven-3.9.11'   
+        maven 'maven-3.9.11'
     }
 
     environment {
         JAVA_OPTS = '-Dorg.jenkinsci.plugins.durabletask.BourneShellScript.HEARTBEAT_CHECK_INTERVAL=86400'
         DOCKERHUB_CREDENTIALS = credentials('dockerhub')
         DOCKERHUB_USER = 'numidu'
-    }  
+    }
 
     stages {
         stage('Clone Repository') {
@@ -20,10 +20,18 @@ pipeline {
             }
         }
 
+        stage('Check Structure') {
+            steps {
+                sh 'ls -la'
+            }
+        }
+
         stage('Build Backend Jar') {
             steps {
-                dir('userbackend') {
-                    sh 'mvn -B clean package -DskipTests'
+                retry(2) {
+                    dir('userbackend') {
+                        sh 'mvn -B clean package -DskipTests'
+                    }
                 }
             }
         }
