@@ -23,7 +23,7 @@ pipeline {
         stage('Build Backend Jar') {
             steps {
                 dir('userbackend') {
-                    sh 'mvn clean package -DskipTests'
+                    sh 'mvn -B clean package -DskipTests'
                 }
             }
         }
