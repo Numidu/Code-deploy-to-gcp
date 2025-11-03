@@ -2,13 +2,13 @@ pipeline {
     agent any
 
     tools {
-        maven 'maven-3.9.5'   // 👈 this name must match the one you added
+        maven 'maven-3.9.5'   
     }
 
     environment {
         DOCKERHUB_CREDENTIALS = credentials('dockerhub')
         DOCKERHUB_USER = 'numidu'
-       
+    }  
 
     stages {
         stage('Clone Repository') {
@@ -18,13 +18,14 @@ pipeline {
                     url: 'https://github.com/Numidu/Codedeploytogcp.git'
             }
         }
-    stage('Build Backend Jar') {
-        steps {
+
+        stage('Build Backend Jar') {
+            steps {
                 dir('userbackend') {
                     sh 'mvn clean package -DskipTests'
+                }
             }
         }
-    }
 
         stage('Build Backend Image') {
             steps {
@@ -57,7 +58,7 @@ pipeline {
                 sshagent(['gcp_vm_key']) {
                     sh """
                         ssh -o StrictHostKeyChecking=no ubuntu@<VM_EXTERNAL_IP> '
-                            cd ~/app || git clone https://github.com/Numidu/Code-deploy-to-gcp.git ~/app &&
+                            cd ~/app || git clone https://github.com/Numidu/Codedeploytogcp.git ~/app &&
                             cd ~/app &&
                             git pull &&
                             docker-compose down &&
