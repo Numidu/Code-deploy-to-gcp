@@ -65,16 +65,16 @@ pipeline {
         stage('Deploy on GCP VM') {
             steps {
                 sshagent(['gcp_vm_key']) {
-                    sh """
-                        ssh -o StrictHostKeyChecking=no ubuntu@34.121.195.75 '
+                    sh ...
+                        ssh -o StrictHostKeyChecking=no dnumidu@34.121.195.75 << 'EOF'
                             cd ~/app || git clone https://github.com/Numidu/Codedeploytogcp.git ~/app &&
                             cd ~/app &&
                             git pull &&
                             docker-compose down &&
                             docker-compose pull &&
                             docker-compose up -d --build
-                        '
-                    """
+                            EOF
+                    ...
                 }
             }
         }
