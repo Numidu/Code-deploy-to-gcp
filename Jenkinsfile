@@ -66,7 +66,7 @@ pipeline {
             steps {
                 sshagent(['gcp_vm_key']) {
                     sh """
-                        ssh -o StrictHostKeyChecking=no ubuntu@<VM_EXTERNAL_IP> '
+                        ssh -o StrictHostKeyChecking=no ubuntu@34.121.195.75 '
                             cd ~/app || git clone https://github.com/Numidu/Codedeploytogcp.git ~/app &&
                             cd ~/app &&
                             git pull &&
